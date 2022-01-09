@@ -14,14 +14,14 @@ module Api
 
             # Recebe um json com peso(weight) e altura(height) e retorna o imc em outro json
             # Apos esse processo, salva as informações no banco para uma possivel futura consulta.
-            
+
             def create
                
-                height = params[:height]
-                weight = params[:weight]
+                height = params[:information][:height]
+                weight = params[:information][:weight]
                 calc_imc(height,weight)
 
-                render json: { imc: @imc , classification: @condition, obesity: @obesity}, status: :ok
+                render json: { imc: @imc , classification: @condition, obesity: @obesity}, status: :created
 
                 information = Information.new(information_params)
                 information.update(imc: @imc, classification: @condition, obesity: @obesity)
@@ -31,6 +31,9 @@ module Api
             
             private
             def calc_imc(height, weight)
+                weight = weight.to_i
+                height = height.to_f
+
                 @imc = weight / (height * height)
                 @imc = @imc.round(2)
 
