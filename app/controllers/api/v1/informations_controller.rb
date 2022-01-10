@@ -28,6 +28,14 @@ module Api
                 information.save
             end
 
+
+            # DELETE localhost:3000/api/v1/imc/:id
+            def destroy
+                information = Information.find(params[:id])
+                information.destroy
+                render json: { message: 'information deleted.', data: information }, status: :ok
+            end
+
             
             private
             def calc_imc(height, weight)
